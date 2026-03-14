@@ -1,0 +1,42 @@
+{
+    "japanese wagyu a5": {
+        "stock": 4,
+        "unit": "kg",
+        "minimum_threshold": 5,
+        "cost_per_unit": 120,
+        "store": "Main Branch",
+        "expiry": "2026-03-18"
+    },
+    "white truffle": {
+        "stock": 2,
+        "unit": "kg",
+        "minimum_threshold": 3,
+        "cost_per_unit": 400,
+        "store": "Main Branch",
+        "expiry": "2026-03-21"
+    },
+    "saffron threads": {
+        "stock": 15,
+        "unit": "units",
+        "minimum_threshold": 20,
+        "cost_per_unit": 35,
+        "store": "Downtown",
+        "expiry": "2027-01-01"
+    },
+    "abcd": {
+        "stock": 3,
+        "unit": "kg",
+        "minimum_threshold": 10,
+        "cost_per_unit": 50,
+        "expiry": "2026-03-06",
+        "store": "Downtown"
+    },
+    "battery": {
+        "stock": -3,
+        "unit": "kg",
+        "minimum_threshold": 10,
+        "cost_per_unit": 50,
+        "expiry": "2026-03-14",
+        "store": "Downtown"
+    }
+}
