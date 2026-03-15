@@ -1,0 +1,13 @@
+# Render service definition (example). Replace values as needed before use.
+# Docs: https://render.com/docs/deploy-yaml
+services:
+  - type: web
+    name: restaurant-inventory-agent
+    env: node
+    plan: free
+    branch: master
+    repo: https://github.com/yashvora29/viba-a-thon.git
+    path: restaurant-inventory-agent
+    buildCommand: "npm --prefix frontend install && npm --prefix frontend run build"
+    startCommand: "npm start"
+    autoDeploy: true
