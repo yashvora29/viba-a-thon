@@ -4,6 +4,9 @@ import './App.css';
 
 declare global { interface Window { ethereum: any; } }
 
+// Read backend base URL from Vite env var (VITE_API_URL). If empty, fall back to relative /api (local dev with proxy)
+const API_BASE = ((import.meta.env as any).VITE_API_URL as string) || '';
+
 interface InventoryItem {
   stock: number; unit: string; minimum_threshold: number;
   cost_per_unit: number; expiry?: string; store?: string;
@@ -85,7 +88,8 @@ function App() {
 
   const fetchInventory = async () => {
     try {
-      const res = await fetch('/api/inventory');
+      const url = API_BASE ? `${API_BASE}/api/inventory` : '/api/inventory';
+      const res = await fetch(url);
       const data = await res.json();
       setInventory(data);
     } catch { console.error("Failed to fetch inventory"); }
@@ -119,7 +123,8 @@ function App() {
     if (e) e.preventDefault();
     if (!newItemName) return;
     try {
-      const res = await fetch('/api/inventory', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ name: newItemName, stock: Number(newItemStock) || 1, unit: newItemUnit, store: newItemStore, expiry: newItemExpiry, minimum_threshold: 10, cost_per_unit: 50 }) });
+  const url = API_BASE ? `${API_BASE}/api/inventory` : '/api/inventory';
+  const res = await fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ name: newItemName, stock: Number(newItemStock) || 1, unit: newItemUnit, store: newItemStore, expiry: newItemExpiry, minimum_threshold: 10, cost_per_unit: 50 }) });
       if (!res.ok) throw new Error('Failed');
       fetchInventory();
       setNewItemName(""); setNewItemStock(""); setNewItemExpiry("");
@@ -129,14 +134,14 @@ function App() {
 
   const handleDeleteItem = async (name: string) => {
     if (!confirm(`Delete "${name}"?`)) return;
-    try { await fetch(`/api/inventory/${name}`, { method: 'DELETE' }); fetchInventory(); }
+    try { const url = API_BASE ? `${API_BASE}/api/inventory/${name}` : `/api/inventory/${name}`; await fetch(url, { method: 'DELETE' }); fetchInventory(); }
     catch { console.error("Delete failed"); }
   };
 
   const updateStock = async (name: string, currentStock: number, change: number) => {
     const newStock = Math.max(0, currentStock + change);
     if (newStock === currentStock) return;
-    try { await fetch(`/api/inventory/${name}`, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ stock: newStock }) }); fetchInventory(); }
+    try { const url = API_BASE ? `${API_BASE}/api/inventory/${name}` : `/api/inventory/${name}`; await fetch(url, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ stock: newStock }) }); fetchInventory(); }
     catch { console.error("Update failed"); }
   };
 
@@ -162,7 +167,8 @@ function App() {
     setChatInput('');
     setChatLoading(true);
     try {
-      const res = await fetch('/api/chat', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ message: msg }) });
+  const url = API_BASE ? `${API_BASE}/api/chat` : '/api/chat';
+  const res = await fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ message: msg }) });
       const data = await res.json();
       setChatMessages(p => [...p, { from: 'ai', text: data.response || 'No response' }]);
     } catch { setChatMessages(p => [...p, { from: 'ai', text: '❌ Backend error. Restart server.js!' }]); }

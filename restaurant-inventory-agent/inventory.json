@@ -1,12 +1,4 @@
 {
-    "japanese wagyu a5": {
-        "stock": 4,
-        "unit": "kg",
-        "minimum_threshold": 5,
-        "cost_per_unit": 120,
-        "store": "Main Branch",
-        "expiry": "2026-03-18"
-    },
     "white truffle": {
         "stock": 2,
         "unit": "kg",
@@ -38,5 +30,13 @@
         "cost_per_unit": 50,
         "expiry": "2026-03-14",
         "store": "Downtown"
+    },
+    "__test_item": {
+        "stock": 3,
+        "unit": "units",
+        "minimum_threshold": 10,
+        "cost_per_unit": 0,
+        "expiry": null,
+        "store": "Main Branch"
     }
 }

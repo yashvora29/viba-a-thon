@@ -5,7 +5,7 @@ const path = require('path');
 const { getInventory, saveInventory } = require('./tools/inventoryTool');
 
 const app = express();
-const PORT = 3001;
+const PORT = process.env.PORT || 3001;
 
 // Allow the React frontend to fetch data
 app.use(cors());
@@ -142,3 +142,15 @@ app.post('/api/chat', (req, res) => {
 app.listen(PORT, () => {
     console.log(`[Dashboard API] Server running on http://localhost:${PORT}`);
 });
+
+// If a production build of the frontend exists, serve it as static files.
+// This allows deploying the whole app as a single service (optional).
+const distPath = path.join(__dirname, 'frontend', 'dist');
+if (fs.existsSync(distPath)) {
+    app.use(express.static(distPath));
+    // Serve index.html for any unknown routes (SPA fallback)
+    app.get('*', (req, res) => {
+        res.sendFile(path.join(distPath, 'index.html'));
+    });
+    console.log('[Dashboard API] Serving static frontend from', distPath);
+}
