@@ -11,6 +11,11 @@ const PORT = process.env.PORT || 3001;
 app.use(cors());
 app.use(express.json());
 
+// Health check for platforms and quick verification
+app.get('/health', (req, res) => {
+    res.json({ ok: true, time: new Date().toISOString() });
+});
+
 // Get all inventory
 app.get('/api/inventory', (req, res) => {
     try {
